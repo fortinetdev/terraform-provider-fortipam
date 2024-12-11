@@ -1,0 +1,11 @@
+disable_checkpoint = true
+
+provider_installation {
+  filesystem_mirror {
+    path    = "/home/user/.terraform.d/plugins"
+    include = ["fortipam.com/*/*"]
+  }
+  direct {
+    exclude = ["fortipam.com/local/fortipam"]
+  }
+}

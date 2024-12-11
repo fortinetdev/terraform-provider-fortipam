@@ -1,0 +1,3258 @@
+---
+swagger: "2.0"
+info:
+  description: "REST API for configuring FortiPAM objects and settings"
+  version: "v1.1.0"
+  title: "FortiPAM"
+  termsOfService: "http://fortinet.com/terms/"
+basePath: "/api/v2"
+tags:
+- name: "secret/database"
+  description: "Configure secret database."
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+security:
+- APIKeyQueryParam: []
+paths:
+  /cmdb/secret/database/{id}:
+    get:
+      tags:
+      - "secret/database"
+      summary: "Select a specific entry from a CLI table.\n Access Group: secretgrp"
+      parameters:
+      - name: "datasource"
+        in: "query"
+        description: "Enable to include datasource information for each linked object."
+        required: false
+        type: "boolean"
+        x-exportParamName: "Datasource"
+        x-optionalDataType: "Bool"
+      - name: "with_meta"
+        in: "query"
+        description: "Enable to include meta information about each object (type id,\
+          \ references, etc)."
+        required: false
+        type: "boolean"
+        x-exportParamName: "WithMeta"
+        x-optionalDataType: "Bool"
+      - name: "skip"
+        in: "query"
+        description: "Enable to call CLI skip operator to hide skipped properties."
+        required: false
+        type: "boolean"
+        x-exportParamName: "Skip"
+        x-optionalDataType: "Bool"
+      - name: "format"
+        in: "query"
+        description: "List of property names to include in results, separated by |\
+          \ (i.e. policyid|srcintf)."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "pipes"
+        x-exportParamName: "Format"
+      - name: "action"
+        in: "query"
+        description: "stats: Return CMDB aggregated statistics.\ndefault: Return the\
+          \ CLI default values for this object type.\nschema: Return the CLI schema\
+          \ for this object type.\nrevision: Return the CMDB revision for this object\
+          \ type.\ntransaction-list: List all configuration transaction(s).\n"
+        required: false
+        type: "string"
+        enum:
+        - "default"
+        - "schema"
+        - "revision"
+        x-exportParamName: "Action"
+        x-optionalDataType: "String"
+      - name: "vdom"
+        in: "query"
+        description: "Specify the Virtual Domain(s) from which results are returned\
+          \ or changes are applied to. If this parameter is not provided, the management\
+          \ VDOM will be used. If the admin does not have access to the VDOM, a permission\
+          \ error will be returned.\nThe URL parameter is one of:\nvdom=root (Single\
+          \ VDOM)\nvdom=vdom1,vdom2 (Multiple VDOMs)\nvdom=* (All VDOMs)\n"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+        x-exportParamName: "Vdom"
+      - name: "secret_encoding"
+        in: "query"
+        description: "Credential encryption\n"
+        required: false
+        type: "string"
+        enum:
+        - "base64"
+        - "plain"
+        x-exportParamName: "SecretEncoding"
+        x-optionalDataType: "String"
+      - name: "fieldname"
+        in: "query"
+        description: "Filter results by field name\n"
+        required: false
+        type: "string"
+        x-exportParamName: "Fieldname"
+        x-optionalDataType: "String"
+      - name: "id"
+        in: "path"
+        description: "mkey"
+        required: true
+        type: "integer"
+        x-exportParamName: "Id"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              id:
+                type: "integer"
+                description: "Secret ID."
+                minimum: 1
+                maximum: 4294967294
+              name:
+                type: "string"
+                description: "Secret name."
+                maxLength: 79
+              uuid:
+                type: "string"
+                format: "uuid"
+                description: "Universally Unique Identifier (UUID; automatically assigned\
+                  \ but can be manually reset)."
+              target:
+                type: "string"
+                description: "Secret target name."
+                maxLength: 64
+              target-privilege-account:
+                type: "string"
+                description: "Enable/disable the current secret as the target privilege\
+                  \ account."
+                enum:
+                - "enable"
+                - "disable"
+              checkout-user:
+                type: "string"
+                description: "Secret checkout user name."
+                maxLength: 64
+              checkout-time:
+                type: "string"
+                format: "date-time"
+                description: "Secret checkout time."
+              last-password-change-time:
+                type: "string"
+                format: "date-time"
+                description: "Secret last password change time."
+              last-password-verification-time:
+                type: "string"
+                format: "date-time"
+                description: "Secret last password verification time."
+              last-success-password-change-time:
+                type: "string"
+                format: "date-time"
+                description: "Secret last password change time."
+              last-success-password-verification-time:
+                type: "string"
+                format: "date-time"
+                description: "Secret last password verification time."
+              pwd-chg-use-policy-default:
+                type: "string"
+                description: "Enable/Disable using policy default for Password Changer\
+                  \   \nenable:Enable setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              heartbeat-use-policy-default:
+                type: "string"
+                description: "Enable/Disable using policy default for Password Heartbeat\
+                  \   \nenable:Enable setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              folder:
+                type: "integer"
+                description: "ID of parent folder."
+                minimum: 0
+                maximum: 4294967295
+              template:
+                type: "string"
+                description: "Secret template name."
+                maxLength: 79
+              associated-secret:
+                type: "integer"
+                description: "Associated secret setting."
+                minimum: 0
+                maximum: 4294967295
+              ssh-connect-with:
+                type: "string"
+                description: "Connect to the target server with current secret or\
+                  \ using associate secret.   \nself:Connect and authenticate to server\
+                  \ using current secret.   \nassociate-secret:Connect and authenticate\
+                  \ to server using associate secret."
+                enum:
+                - "self"
+                - "associate-secret"
+              ssh-auto-password:
+                type: "string"
+                description: "Automatically send password to server when privileged\
+                  \ command (e.g., sudo) in SSH terminal detected.   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              ztna-tags-match-logic:
+                type: "string"
+                description: "ZTNA tag matching logic.   \nor:Match ZTNA tags using\
+                  \ a logical OR operator.   \nand:Match ZTNA tags using a logical\
+                  \ AND operator."
+                enum:
+                - "or"
+                - "and"
+              rsa-sign-algo:
+                type: "string"
+                description: "Signing algorithm of RSA-based publicKey authentication\
+                  \ for ssh launcher.   \nssh-rsa:RSA publicKey authentication using\
+                  \ RSA SHA-1 signing algorithm.   \nrsa-sha2-256:RSA publicKey authentication\
+                  \ using RSA SHA-256 signing algorithm.   \nrsa-sha2-512:RSA publicKey\
+                  \ authentication using RSA SHA-512 signing algorithm."
+                enum:
+                - "ssh-rsa"
+                - "rsa-sha2-256"
+                - "rsa-sha2-512"
+              keyboard-layout:
+                type: "string"
+                description: "Keyboard layout (Applies to web-rdp only).   \nar-101:Arabic\
+                  \ (101).   \nar-102:Arabic (102).   \nar-102-azerty:Arabic (102)\
+                  \ AZERTY.   \ncan-mul:Canadian Multilingual Standard.   \ncz:Czech.\
+                  \   \ncz-qwerty:Czech (QWERTY).   \ncz-pr:Czech Programmers.   \n\
+                  da:Danish.   \nnl:Dutch.   \nde:German.   \nde-ch:German, Switzerland.\
+                  \   \nde-ibm:German (IBM).   \nen-uk:English, United Kingdom.  \
+                  \ \nen-uk-ext:English, United Kingdom Extended.   \nen-us:English,\
+                  \ United States.   \nen-us-dvorak:English, United States-Dvorak.\
+                  \   \nes:Spanish.   \nes-var:Spanish Variation.   \nfi:Finish. \
+                  \  \nfi-sami:Finnish with Sami.   \nfr:French.   \nfr-ca:French,\
+                  \ Canada.   \nfr-ch:French, Switzerland.   \nfr-be:French, Belgian.\
+                  \   \nhr:Croatian.   \nhu:Hungarian.   \nhu-101:Hungarian 101-Key.\
+                  \   \nit:Italian.   \nit-142:Italian (142).   \nja:Japanese.   \n\
+                  ko:Korean.   \nlt:Lithuanian.   \nlt-ibm:Lithuanian IBM.   \nlt-std:Lithuanian\
+                  \ Standard.   \nlav-std:Latvian (Standard).   \nlav-leg:Latvian\
+                  \ (Legacy).   \nmk:Macedonian (FYROM).   \nmk-std:Macedonia (FYROM)\
+                  \ - Standard.   \nno:Norwegian.   \nno-sami:Norwegian with Sami.\
+                  \   \npol-214:Polish (214).   \npol-pr:Polish (Programmers).   \n\
+                  pt:Portuguese.   \npt-br:Portuguese (Brazilian ABNT).   \npt-br-abnt2:Portuguese\
+                  \ (Brazilian ABNT2).   \nru:Russian.   \nru-mne:Russian - Mnemonic.\
+                  \   \nru-t:Russian (Typewriter).   \nsl:Slovenian.   \nsv:Swedish.\
+                  \   \nsv-sami:Swedish with Sami.   \ntuk:Turkmen.   \ntur-f:Turkish\
+                  \ F.   \ntur-q:Turkish Q.   \nzh-sym-sg-us:Chinese (Simplified,\
+                  \ Singapore) - US keyboard.   \nzh-sym-us:Chinese (Simplified) -\
+                  \ US Keyboard.   \nzh-tr-hk:Chinese (Traditional, Hong Kong S.A.R.).\
+                  \   \nzh-tr-mo:Chinese (Traditional Macao S.A.R.) - US Keyboard.\
+                  \   \nzh-tr-us:Chinese (Traditional) - US keyboard."
+                enum:
+                - "ar-101"
+                - "ar-102"
+                - "ar-102-azerty"
+                - "can-mul"
+                - "cz"
+                - "cz-qwerty"
+                - "cz-pr"
+                - "da"
+                - "nl"
+                - "de"
+                - "de-ch"
+                - "de-ibm"
+                - "en-uk"
+                - "en-uk-ext"
+                - "en-us"
+                - "en-us-dvorak"
+                - "es"
+                - "es-var"
+                - "fi"
+                - "fi-sami"
+                - "fr"
+                - "fr-ca"
+                - "fr-ch"
+                - "fr-be"
+                - "hr"
+                - "hu"
+                - "hu-101"
+                - "it"
+                - "it-142"
+                - "ja"
+                - "ko"
+                - "lt"
+                - "lt-ibm"
+                - "lt-std"
+                - "lav-std"
+                - "lav-leg"
+                - "mk"
+                - "mk-std"
+                - "no"
+                - "no-sami"
+                - "pol-214"
+                - "pol-pr"
+                - "pt"
+                - "pt-br"
+                - "pt-br-abnt2"
+                - "ru"
+                - "ru-mne"
+                - "ru-t"
+                - "sl"
+                - "sv"
+                - "sv-sami"
+                - "tuk"
+                - "tur-f"
+                - "tur-q"
+                - "zh-sym-sg-us"
+                - "zh-sym-us"
+                - "zh-tr-hk"
+                - "zh-tr-mo"
+                - "zh-tr-us"
+              description:
+                type: "string"
+                description: "Description."
+                maxLength: 255
+              password-changer:
+                type: "string"
+                description: "Setting of password changer.   \nenable:Enable setting.\
+                  \   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              password-heartbeat:
+                type: "string"
+                description: "Setting of password heartbeat.   \nenable:Enable setting.\
+                  \   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              checkout:
+                type: "string"
+                description: "Setting of checkout.   \nenable:Enable setting.   \n\
+                  disable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              recording:
+                type: "string"
+                description: "Setting of screen recording.   \nenable:Enable setting.\
+                  \   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              need-approval:
+                type: "string"
+                description: "Setting of approval for launching secret.   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              need-approval-job:
+                type: "string"
+                description: "Setting of approval for activating secret job.   \n\
+                  enable:Enable setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              proxy:
+                type: "string"
+                description: "Setting of proxy for secret.   \nenable:Enable setting.\
+                  \   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              ssh-filter:
+                type: "string"
+                description: "Setting of if secret need ssh filter profile.   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              av-scan:
+                type: "string"
+                description: "Setting of if secret need antivirus profile.   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              dlp-status:
+                type: "string"
+                description: "Setting of if seceret need dlp profile.   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              rdp-event-filter:
+                type: "string"
+                description: "Setting of if seceret need dlp profile.   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              rdp-security-level:
+                type: "string"
+                description: "RDP Security Level   \nrdp:Standard RDP encryption (web-rdp\
+                  \ only).   \ntls:RDP over TLS.   \nnla:Network Level Authentication\
+                  \ (CredSSP).   \nbest-effort:Best effort (use NLA if server supports,\
+                  \ RDP over TLS otherwise)."
+                enum:
+                - "rdp"
+                - "tls"
+                - "nla"
+                - "best-effort"
+              rdp-restricted-admin-mode:
+                type: "string"
+                description: "Credential-less logon over NLA.   \nenable:Enable setting.\
+                  \   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              block-rdp-clipboard:
+                type: "string"
+                description: "Setting of whether block clipboard copy & paste of rdp\
+                  \ auth proxy.   \nenable:Enable setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              pwd-chg-sch-frequency:
+                type: "string"
+                description: "Password Change Frequency. Repeats Monthly/Weekly/Daily\
+                  \   \nmonth:Repeat Monthly   \nweek:Repeat Weekly.   \nday:Repeat\
+                  \ Daily."
+                enum:
+                - "month"
+                - "week"
+                - "day"
+              pwd-chg-sch-interval:
+                type: "integer"
+                description: "Password Change Interval. Ex. Every x (month/week/day(s),\
+                  \ based on frequency)"
+                minimum: 1
+                maximum: 400
+              pwd-chg-sch-month-type:
+                type: "string"
+                description: "Password change schedule Monthly Type.   \nfirst:Repeat\
+                  \ in the first week of each month.   \nsecond:Repeat in the second\
+                  \ week of each month.   \nthird:Repeat in the third week of each\
+                  \ month.   \nlast:Repeat in the last week of each month.   \nlast-day:Repeat\
+                  \ on the last day of each month.   \nspecific:Repeat on a specific\
+                  \ day of each month."
+                enum:
+                - "first"
+                - "second"
+                - "third"
+                - "last"
+                - "last-day"
+                - "specific"
+              pwd-chg-sch-month-day:
+                type: "string"
+                description: "Password change schedule month days. Repeat Monthly\
+                  \ on specified date(s). (May be many)   \n1:1   \n2:2   \n3:3  \
+                  \ \n4:4   \n5:5   \n6:6   \n7:7   \n8:8   \n9:9   \n10:10   \n11:11\
+                  \   \n12:12   \n13:13   \n14:14   \n15:15   \n16:16   \n17:17  \
+                  \ \n18:18   \n19:19   \n20:20   \n21:21   \n22:22   \n23:23   \n\
+                  24:24   \n25:25   \n26:26   \n27:27   \n28:28"
+                enum:
+                - "1"
+                - "2"
+                - "3"
+                - "4"
+                - "5"
+                - "6"
+                - "7"
+                - "8"
+                - "9"
+                - "10"
+                - "11"
+                - "12"
+                - "13"
+                - "14"
+                - "15"
+                - "16"
+                - "17"
+                - "18"
+                - "19"
+                - "20"
+                - "21"
+                - "22"
+                - "23"
+                - "24"
+                - "25"
+                - "26"
+                - "27"
+                - "28"
+              pwd-chg-sch-week-day:
+                type: "string"
+                description: "Password change schedule week days. (May be many)  \
+                  \ \nsunday:Sunday.   \nmonday:Monday.   \ntuesday:Tuesday.   \n\
+                  wednesday:Wednesday.   \nthursday:Thursday.   \nfriday:Friday. \
+                  \  \nsaturday:Saturday."
+                enum:
+                - "sunday"
+                - "monday"
+                - "tuesday"
+                - "wednesday"
+                - "thursday"
+                - "friday"
+                - "saturday"
+              pwd-chg-sch-start-date:
+                type: "string"
+                format: "date-time"
+                description: "Password change schedule start date"
+              heartbeat-interval:
+                type: "integer"
+                description: "Heartbeat interval(mins)."
+                minimum: 5
+                maximum: 44640
+              heartbeat-start-time:
+                type: "string"
+                format: "date-time"
+                description: "Password heartbeat start time"
+              checkout-duration:
+                type: "integer"
+                description: "Setting of checkout duration(minutes)."
+                minimum: 3
+                maximum: 120
+              checkin-pwd-change:
+                type: "string"
+                description: "Setting to change password on checkin   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              checkout-duration-renew:
+                type: "string"
+                description: "Setting to renew checkout duration   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              checkout-renew-times:
+                type: "integer"
+                description: "Setting of the max amount of times you can renew checkout."
+                minimum: 1
+                maximum: 5
+              tunnel-encryption:
+                type: "string"
+                description: "Setting of using encrypted tunnel.   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              approval-profile:
+                type: "string"
+                description: "Setting of approval-profile for secret."
+                maxLength: 79
+              ssh-filter-profile:
+                type: "string"
+                description: "SSH filter profile."
+                maxLength: 79
+              dlp-sensor:
+                type: "string"
+                description: "DLP sensor name."
+                maxLength: 79
+              av-profile:
+                type: "string"
+                description: "Name of Antivirus profile."
+                maxLength: 79
+              inherit-permission:
+                type: "string"
+                description: "Enable/disable inherit permission from folder.   \n\
+                  enable:Enable setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              ssh-service-status:
+                type: "string"
+                description: "SSH service status.   \nup:Service up on server.   \n\
+                  down:Service down on server."
+                enum:
+                - "up"
+                - "down"
+              ssh-service-port:
+                type: "integer"
+                description: "SSH service port (unset to use default)."
+                minimum: 0
+                maximum: 65535
+              rdp-service-status:
+                type: "string"
+                description: "RDP service status.   \nup:Service up on server.   \n\
+                  down:Service down on server."
+                enum:
+                - "up"
+                - "down"
+              rdp-service-port:
+                type: "integer"
+                description: "RDP service port (unset to use default)."
+                minimum: 0
+                maximum: 65535
+              vnc-service-status:
+                type: "string"
+                description: "VNC service status.   \nup:Service up on server.   \n\
+                  down:Service down on server."
+                enum:
+                - "up"
+                - "down"
+              vnc-service-port:
+                type: "integer"
+                description: "VNC service port (unset to use default)."
+                minimum: 0
+                maximum: 65535
+              ldaps-service-status:
+                type: "string"
+                description: "LDAPS service status.   \nup:Service up on server. \
+                  \  \ndown:Service down on server."
+                enum:
+                - "up"
+                - "down"
+              ldaps-service-port:
+                type: "integer"
+                description: "LDAPS service port (unset to use default)."
+                minimum: 0
+                maximum: 65535
+              samba-service-status:
+                type: "string"
+                description: "Samba service status.   \nup:Service up on server. \
+                  \  \ndown:Service down on server."
+                enum:
+                - "up"
+                - "down"
+              samba-service-port:
+                type: "integer"
+                description: "Samba service port (unset to use default)."
+                minimum: 0
+                maximum: 65535
+              display-num:
+                type: "integer"
+                description: "Display number for vnc (unset to use default)"
+                minimum: 0
+                maximum: 255
+              address-blacklist:
+                type: "array"
+                description: "RDP target blacklist addresses."
+                items:
+                  type: "object"
+                  properties:
+                    name:
+                      type: "string"
+                      description: "Blacklist address/group."
+                      maxLength: 79
+              address-whitelist:
+                type: "array"
+                description: "RDP target whitelist addresses."
+                items:
+                  type: "object"
+                  properties:
+                    name:
+                      type: "string"
+                      description: "Whitelist address/group."
+                      maxLength: 79
+              ztna-ems-tag:
+                type: "array"
+                description: "ZTNA ems tag that controls launching"
+                items:
+                  type: "object"
+                  properties:
+                    name:
+                      type: "string"
+                      description: "ZTNA ems tag."
+                      maxLength: 79
+              user-permission:
+                type: "array"
+                description: "Configure user permission."
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                      type: "integer"
+                      description: "Permission ID."
+                      minimum: 0
+                      maximum: 4294967295
+                    user-name:
+                      type: "array"
+                      description: "User name."
+                      items:
+                        type: "object"
+                        properties:
+                          name:
+                            type: "string"
+                            description: "User name."
+                            maxLength: 64
+                    permission:
+                      type: "string"
+                      description: "Secret permission option.   \nnone:No Permissions.\
+                        \   \nlist:List permission.   \nview:View permission.   \n\
+                        edit:Edit permission.   \nowner:Owner permission."
+                      enum:
+                      - "none"
+                      - "list"
+                      - "view"
+                      - "edit"
+                      - "owner"
+              group-permission:
+                type: "array"
+                description: "Configure group permission."
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                      type: "integer"
+                      description: "Permision ID."
+                      minimum: 0
+                      maximum: 4294967295
+                    group-name:
+                      type: "array"
+                      description: "Group name."
+                      items:
+                        type: "object"
+                        properties:
+                          name:
+                            type: "string"
+                            description: "Group name."
+                            maxLength: 35
+                    permission:
+                      type: "string"
+                      description: "Secret permission option.   \nnone:No Permissions.\
+                        \   \nlist:List permission.   \nview:View permission.   \n\
+                        edit:Edit permission.   \nowner:Owner permission."
+                      enum:
+                      - "none"
+                      - "list"
+                      - "view"
+                      - "edit"
+                      - "owner"
+              credentials-history:
+                type: "array"
+                description: "Credentials history."
+                items:
+                  type: "object"
+                  properties:
+                    last-status:
+                      type: "string"
+                      description: "Last password change status.   \ndisabled:Password\
+                        \ change disabled.   \nsuccess:Password changed and verified\
+                        \ successfully.   \npending:Password is changing.   \nchange-failed:Password\
+                        \ change failed.   \nverify-failed:Password verify failed."
+                      enum:
+                      - "disabled"
+                      - "success"
+                      - "pending"
+                      - "change-failed"
+                      - "verify-failed"
+                    last-access-time:
+                      type: "string"
+                      format: "date-time"
+                      description: "Secret last password access time."
+                    last-password:
+                      type: "string"
+                      description: "Last new Password or passphase."
+                      maxLength: 8191
+                    last-public-key:
+                      type: "string"
+                      description: "Last new public key."
+                      maxLength: 8191
+                    last-private-key:
+                      type: "string"
+                      description: "Last  new private key."
+                      maxLength: 8191
+                    history-entry:
+                      type: "array"
+                      description: "Credential history entry."
+                      items:
+                        type: "object"
+                        properties:
+                          id:
+                            type: "integer"
+                            description: "History ID."
+                            minimum: 1
+                            maximum: 32
+                          last-access-time:
+                            type: "string"
+                            format: "date-time"
+                            description: "Secret last password access time."
+                          password:
+                            type: "string"
+                            description: "Password or passphase."
+                            maxLength: 8191
+                          public-key:
+                            type: "string"
+                            description: "Public key."
+                            maxLength: 8191
+                          private-key:
+                            type: "string"
+                            description: "Private key."
+                            maxLength: 8191
+              field:
+                type: "array"
+                description: "Configure secret fields. Current secret credential information"
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                      type: "integer"
+                      description: "Field ID."
+                      minimum: 1
+                      maximum: 10
+                    name:
+                      type: "string"
+                      description: "Field name."
+                      maxLength: 79
+                    value:
+                      type: "string"
+                      description: "Value of the field."
+                      maxLength: 8191
+              totp-setting:
+                type: "array"
+                description: "Third party time based one time password setting. For\
+                  \ Fortitoken totp activation support, please use internal/secret-ftk\
+                  \ api to update this field."
+                items:
+                  type: "object"
+                  properties:
+                    status:
+                      type: "string"
+                      description: "Use FortiPAM as the TOTP generator."
+                      enum:
+                      - "enable"
+                      - "disable"
+                    use-template-setting:
+                      type: "string"
+                      description: "Use totp settings from template."
+                      enum:
+                      - "enable"
+                      - "disable"
+                    totp-length:
+                      type: "integer"
+                      description: "Length of TOTP."
+                      minimum: 4
+                      maximum: 9
+                    totp-duration:
+                      type: "integer"
+                      description: "Duration of TOTP."
+                      minimum: 30
+                      maximum: 90
+                    hash-type:
+                      type: "string"
+                      description: "Hash algo of TOTP."
+                      enum:
+                      - "hmac-sha1"
+                      - "hmac-sha256"
+                      - "hmac-sha512"
+                    shared-key:
+                      type: "string"
+                      description: "Key of TOTP."
+        "400":
+          description: "Bad Request: Request cannot be processed by the API"
+        "401":
+          description: "Not Authorized: Request without successful login session"
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource. "
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. The offended source is temporarily blocked for certain amount\
+            \ of time."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request "
+    put:
+      tags:
+      - "secret/database"
+      summary: "Update this specific resource.\n Access Group: secretgrp"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Possible parameters to go in the body for the request"
+        required: true
+        schema:
+          $ref: "#/definitions/body"
+        x-exportParamName: "Body"
+      - name: "vdom"
+        in: "query"
+        description: "Specify the Virtual Domain(s) from which results are returned\
+          \ or changes are applied to. If this parameter is not provided, the management\
+          \ VDOM will be used. If the admin does not have access to the VDOM, a permission\
+          \ error will be returned.\nThe URL parameter is one of:\nvdom=root (Single\
+          \ VDOM)\nvdom=vdom1,vdom2 (Multiple VDOMs)\nvdom=* (All VDOMs)\n"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+        x-exportParamName: "Vdom"
+      - name: "action"
+        in: "query"
+        description: "If supported, an action can be specified.\n_move_: Move this\
+          \ specific resource.\nWhen *action=move* is set, one of the extra parameters\
+          \ (*before*, *after*) must be provided.\n__*Note:*__ If this parameter is\
+          \ provided when not supported, the action will be ignored and an “invalid\
+          \ request” error will be returned.\n"
+        required: false
+        type: "string"
+        enum:
+        - "move"
+        x-exportParamName: "Action"
+        x-optionalDataType: "String"
+      - name: "before"
+        in: "query"
+        description: "If *action=move*, use *before* to specify the ID of the resource\
+          \ that this resource will be moved before.\nFor example, to move `object\
+          \ 1` to before `object 2`, use:\n__action=move&before=2__\n__*Note:*__ This\
+          \ parameter can only be used when the *action* parameter is set to *move*.\n"
+        required: false
+        type: "string"
+        x-exportParamName: "Before"
+        x-optionalDataType: "String"
+      - name: "after"
+        in: "query"
+        description: "If *action=move*, use *after* to specify the ID of the resource\
+          \ that this resource will be moved after.\nFor example, to move `object\
+          \ 1` to after `object 3`, use:\n__action=move&after=3__\n__*Note:*__ This\
+          \ parameter can only be used when the *action* parameter is set to *move*.\n"
+        required: false
+        type: "string"
+        x-exportParamName: "After"
+        x-optionalDataType: "String"
+      - name: "id"
+        in: "path"
+        description: "mkey"
+        required: true
+        type: "integer"
+        x-exportParamName: "Id"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              status:
+                type: "string"
+                description: "http status message"
+              http_status:
+                type: "integer"
+                description: "http status code"
+              msg:
+                type: "string"
+                description: "Message returned by FPAM"
+              http_method:
+                type: "string"
+                description: "http method"
+              mkey:
+                type: "integer"
+                description: "secret ID"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API"
+        "401":
+          description: "Not Authorized: Request without successful login session"
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource. "
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. The offended source is temporarily blocked for certain amount\
+            \ of time."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request "
+    delete:
+      tags:
+      - "secret/database"
+      summary: "Delete this specific resource.\n Access Group: secretgrp"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "mkey"
+        required: true
+        type: "integer"
+        x-exportParamName: "Id"
+      - name: "vdom"
+        in: "query"
+        description: "Specify the Virtual Domain(s) from which results are returned\
+          \ or changes are applied to. If this parameter is not provided, the management\
+          \ VDOM will be used. If the admin does not have access to the VDOM, a permission\
+          \ error will be returned.\nThe URL parameter is one of:\nvdom=root (Single\
+          \ VDOM)\nvdom=vdom1,vdom2 (Multiple VDOMs)\nvdom=* (All VDOMs)\n"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+        x-exportParamName: "Vdom"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              status:
+                type: "string"
+                description: "http status message"
+              http_status:
+                type: "integer"
+                description: "http status code"
+              msg:
+                type: "string"
+                description: "Message returned by FPAM"
+              http_method:
+                type: "string"
+                description: "http method"
+              mkey:
+                type: "integer"
+                description: "secret ID"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API"
+        "401":
+          description: "Not Authorized: Request without successful login session"
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource. "
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. The offended source is temporarily blocked for certain amount\
+            \ of time."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request "
+  /cmdb/secret/database:
+    post:
+      tags:
+      - "secret/database"
+      summary: "Create object(s) in this table.\n Access Group: secretgrp"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Possible parameters to go in the body for the request"
+        required: true
+        schema:
+          $ref: "#/definitions/body_1"
+        x-exportParamName: "Body"
+      - name: "vdom"
+        in: "query"
+        description: "Specify the Virtual Domain(s) from which results are returned\
+          \ or changes are applied to. If this parameter is not provided, the management\
+          \ VDOM will be used. If the admin does not have access to the VDOM, a permission\
+          \ error will be returned.\nThe URL parameter is one of:\nvdom=root (Single\
+          \ VDOM)\nvdom=vdom1,vdom2 (Multiple VDOMs)\nvdom=* (All VDOMs)\n"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+        x-exportParamName: "Vdom"
+      - name: "action"
+        in: "query"
+        description: "If supported, an action can be specified.\n_clone_: Clone this\
+          \ specific resource.\nWhen *action=clone* is set, the extra parameters *nkey*\
+          \ must be provided.\n__*Note:*__ If this parameter is provided when not\
+          \ supported, the action will be ignored and an “invalid request” error will\
+          \ be returned.\n"
+        required: false
+        type: "string"
+        enum:
+        - "clone"
+        x-exportParamName: "Action"
+        x-optionalDataType: "String"
+      - name: "nkey"
+        in: "query"
+        description: " If *action=clone*, use *nkey* to specify the ID for the new\
+          \ resource to be created.\nFor example, to clone `address1` to `address1_clone`,\
+          \ use:\n__action=clone&nkey=address1_clone__\n__*Note:*__ This parameter\
+          \ can only be used when the *action* parameter is set to *clone*.\n"
+        required: false
+        type: "string"
+        x-exportParamName: "Nkey"
+        x-optionalDataType: "String"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              status:
+                type: "string"
+                description: "http status message"
+              http_status:
+                type: "integer"
+                description: "http status code"
+              msg:
+                type: "string"
+                description: "Message returned by FPAM"
+              http_method:
+                type: "string"
+                description: "http method"
+              mkey:
+                type: "integer"
+                description: "secret ID"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API"
+        "401":
+          description: "Not Authorized: Request without successful login session"
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource. "
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. The offended source is temporarily blocked for certain amount\
+            \ of time."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request "
+  /internal/secret-checkout:
+    post:
+      tags:
+      - "secret-checkout"
+      summary: "Secret checkout."
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Possible parameters to go in the body for the request."
+        required: true
+        schema:
+          $ref: "#/definitions/body_2"
+        x-exportParamName: "Body"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              status:
+                type: "string"
+                description: "http status message"
+              http_status:
+                type: "integer"
+                description: "http status code"
+              msg:
+                type: "string"
+                description: "Message returned by FPAM"
+              http_method:
+                type: "string"
+                description: "http method"
+              results:
+                type: "string"
+                description: "retrieved password"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API."
+        "401":
+          description: "Not Authorized: Authentication not successful."
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource."
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity. "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. Source is blocked by IP Address."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request."
+  /internal/secret-checkin:
+    post:
+      tags:
+      - "secret-checkin"
+      summary: "Secret checkin."
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Possible parameters to go in the body for the request."
+        required: true
+        schema:
+          $ref: "#/definitions/body_3"
+        x-exportParamName: "Body"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              status:
+                type: "string"
+                description: "http status message"
+              http_status:
+                type: "integer"
+                description: "http status code"
+              msg:
+                type: "string"
+                description: "Message returned by FPAM"
+              http_method:
+                type: "string"
+                description: "http method"
+              results:
+                type: "string"
+                description: "retrieved password"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API."
+        "401":
+          description: "Not Authorized: Authentication not successful."
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource."
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity. "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. Source is blocked by IP Address."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request."
+  /utility/id/{path}:
+    get:
+      tags:
+      - "Path to secret/folder ID"
+      summary: "Get secret/folder ID by providing full path\n Access Group: secretgrp"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "Indicate request is to retrieve a secret or folder\n"
+        required: true
+        type: "string"
+        x-exportParamName: "Type_"
+      - name: "path"
+        in: "path"
+        description: "Full path to a secret or folder\n"
+        required: true
+        type: "string"
+        x-exportParamName: "Path"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              id:
+                type: "integer"
+                description: "Secret/Folder ID."
+                minimum: 1
+                maximum: 4294967294
+              type:
+                type: "string"
+                description: "ID type. This returned value matches type in query"
+                enum:
+                - "secret"
+                - "folder"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API."
+        "401":
+          description: "Not Authorized: Authentication not successful."
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource."
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity. "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. Source is blocked by IP Address."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request."
+  /cmdb/secret/folder/{id}:
+    get:
+      tags:
+      - "secret/folder"
+      summary: "Select a specific entry from a CLI table.\n Access Group: secretgrp"
+      parameters:
+      - name: "datasource"
+        in: "query"
+        description: "Enable to include datasource information for each linked object."
+        required: false
+        type: "boolean"
+        x-exportParamName: "Datasource"
+        x-optionalDataType: "Bool"
+      - name: "with_meta"
+        in: "query"
+        description: "Enable to include meta information about each object (type id,\
+          \ references, etc)."
+        required: false
+        type: "boolean"
+        x-exportParamName: "WithMeta"
+        x-optionalDataType: "Bool"
+      - name: "skip"
+        in: "query"
+        description: "Enable to call CLI skip operator to hide skipped properties."
+        required: false
+        type: "boolean"
+        x-exportParamName: "Skip"
+        x-optionalDataType: "Bool"
+      - name: "format"
+        in: "query"
+        description: "List of property names to include in results, separated by |\
+          \ (i.e. policyid|srcintf)."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "pipes"
+        x-exportParamName: "Format"
+      - name: "action"
+        in: "query"
+        description: "stats: Return CMDB aggregated statistics.\ndefault: Return the\
+          \ CLI default values for this object type.\nschema: Return the CLI schema\
+          \ for this object type.\nrevision: Return the CMDB revision for this object\
+          \ type.\ntransaction-list: List all configuration transaction(s).\n"
+        required: false
+        type: "string"
+        enum:
+        - "default"
+        - "schema"
+        - "revision"
+        x-exportParamName: "Action"
+        x-optionalDataType: "String"
+      - name: "vdom"
+        in: "query"
+        description: "Specify the Virtual Domain(s) from which results are returned\
+          \ or changes are applied to. If this parameter is not provided, the management\
+          \ VDOM will be used. If the admin does not have access to the VDOM, a permission\
+          \ error will be returned.\nThe URL parameter is one of:\nvdom=root (Single\
+          \ VDOM)\nvdom=vdom1,vdom2 (Multiple VDOMs)\nvdom=* (All VDOMs)\n"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+        x-exportParamName: "Vdom"
+      - name: "id"
+        in: "path"
+        description: "mkey"
+        required: true
+        type: "integer"
+        x-exportParamName: "Id"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              id:
+                type: "integer"
+                description: "Folder ID."
+                minimum: 1
+                maximum: 4294967294
+              name:
+                type: "string"
+                description: "Folder name."
+                maxLength: 79
+              inherit-policy:
+                type: "string"
+                description: "Enable/disable inherit policy from parent.   \nenable:Enable\
+                  \ setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              inherit-permission:
+                type: "string"
+                description: "Enable/disable inherit permission from parent.   \n\
+                  enable:Enable setting.   \ndisable:Disable setting."
+                enum:
+                - "enable"
+                - "disable"
+              folder-type:
+                type: "string"
+                description: "Personal/Regular folder.   \npersonal:Personal folder.\
+                  \   \npublic:Public folder"
+                enum:
+                - "personal"
+                - "public"
+              secret-policy:
+                type: "string"
+                description: "Secret policy name."
+                maxLength: 79
+              parent-folder:
+                type: "integer"
+                description: "ID of parent folder, Root == 0"
+                minimum: 0
+                maximum: 4294967295
+              user-permission:
+                type: "array"
+                description: "Configure user permission."
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                      type: "integer"
+                      description: "Permission ID."
+                      minimum: 0
+                      maximum: 4294967295
+                    user-name:
+                      type: "array"
+                      description: "User name."
+                      items:
+                        type: "object"
+                        properties:
+                          name:
+                            type: "string"
+                            description: "User name."
+                            maxLength: 64
+                    folder-permission:
+                      type: "string"
+                      description: "Folder permission option.   \nnone:No permission.\
+                        \   \nview:View permission.   \nadd-secret:Add secret permission.\
+                        \   \nedit:Edit permission.   \nowner:Owner permission."
+                      enum:
+                      - "none"
+                      - "view"
+                      - "add-secret"
+                      - "edit"
+                      - "owner"
+                    secret-permission:
+                      type: "string"
+                      description: "Secret permission option.   \nnone:No Permissions.\
+                        \   \nlist:List permission.   \nview:View permission.   \n\
+                        edit:Edit permission.   \nowner:Owner permission."
+                      enum:
+                      - "none"
+                      - "list"
+                      - "view"
+                      - "edit"
+                      - "owner"
+              group-permission:
+                type: "array"
+                description: "Configure group permission."
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                      type: "integer"
+                      description: "Permision ID."
+                      minimum: 0
+                      maximum: 4294967295
+                    group-name:
+                      type: "array"
+                      description: "Group name."
+                      items:
+                        type: "object"
+                        properties:
+                          name:
+                            type: "string"
+                            description: "Group name."
+                            maxLength: 35
+                    folder-permission:
+                      type: "string"
+                      description: "Polder permission option.   \nnone:No permission.\
+                        \   \nview:View permission.   \nadd-secret:Add secret permission.\
+                        \   \nedit:Edit permission.   \nowner:Owner permission."
+                      enum:
+                      - "none"
+                      - "view"
+                      - "add-secret"
+                      - "edit"
+                      - "owner"
+                    secret-permission:
+                      type: "string"
+                      description: "Secret permission option.   \nnone:No Permissions.\
+                        \   \nlist:List permission.   \nview:View permission.   \n\
+                        edit:Edit permission.   \nowner:Owner permission."
+                      enum:
+                      - "none"
+                      - "list"
+                      - "view"
+                      - "edit"
+                      - "owner"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API"
+        "401":
+          description: "Not Authorized: Request without successful login session"
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource. "
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. The offended source is temporarily blocked for certain amount\
+            \ of time."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request "
+    put:
+      tags:
+      - "secret/folder"
+      summary: "Update this specific resource.\n Access Group: secretgrp"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Possible parameters to go in the body for the request"
+        required: true
+        schema:
+          $ref: "#/definitions/body_4"
+        x-exportParamName: "Body"
+      - name: "vdom"
+        in: "query"
+        description: "Specify the Virtual Domain(s) from which results are returned\
+          \ or changes are applied to. If this parameter is not provided, the management\
+          \ VDOM will be used. If the admin does not have access to the VDOM, a permission\
+          \ error will be returned.\nThe URL parameter is one of:\nvdom=root (Single\
+          \ VDOM)\nvdom=vdom1,vdom2 (Multiple VDOMs)\nvdom=* (All VDOMs)\n"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+        x-exportParamName: "Vdom"
+      - name: "action"
+        in: "query"
+        description: "If supported, an action can be specified.\n_move_: Move this\
+          \ specific resource.\nWhen *action=move* is set, one of the extra parameters\
+          \ (*before*, *after*) must be provided.\n__*Note:*__ If this parameter is\
+          \ provided when not supported, the action will be ignored and an “invalid\
+          \ request” error will be returned.\n"
+        required: false
+        type: "string"
+        enum:
+        - "move"
+        x-exportParamName: "Action"
+        x-optionalDataType: "String"
+      - name: "before"
+        in: "query"
+        description: "If *action=move*, use *before* to specify the ID of the resource\
+          \ that this resource will be moved before.\nFor example, to move `object\
+          \ 1` to before `object 2`, use:\n__action=move&before=2__\n__*Note:*__ This\
+          \ parameter can only be used when the *action* parameter is set to *move*.\n"
+        required: false
+        type: "string"
+        x-exportParamName: "Before"
+        x-optionalDataType: "String"
+      - name: "after"
+        in: "query"
+        description: "If *action=move*, use *after* to specify the ID of the resource\
+          \ that this resource will be moved after.\nFor example, to move `object\
+          \ 1` to after `object 3`, use:\n__action=move&after=3__\n__*Note:*__ This\
+          \ parameter can only be used when the *action* parameter is set to *move*.\n"
+        required: false
+        type: "string"
+        x-exportParamName: "After"
+        x-optionalDataType: "String"
+      - name: "id"
+        in: "path"
+        description: "mkey"
+        required: true
+        type: "integer"
+        x-exportParamName: "Id"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              status:
+                type: "string"
+                description: "http status message"
+              http_status:
+                type: "integer"
+                description: "http status code"
+              msg:
+                type: "string"
+                description: "Message returned by FPAM"
+              http_method:
+                type: "string"
+                description: "http method"
+              mkey:
+                type: "integer"
+                description: "folder id"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API"
+        "401":
+          description: "Not Authorized: Request without successful login session"
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource. "
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. The offended source is temporarily blocked for certain amount\
+            \ of time."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request "
+    delete:
+      tags:
+      - "secret/folder"
+      summary: "Delete this specific resource.\n Access Group: secretgrp"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "mkey"
+        required: true
+        type: "integer"
+        x-exportParamName: "Id"
+      - name: "vdom"
+        in: "query"
+        description: "Specify the Virtual Domain(s) from which results are returned\
+          \ or changes are applied to. If this parameter is not provided, the management\
+          \ VDOM will be used. If the admin does not have access to the VDOM, a permission\
+          \ error will be returned.\nThe URL parameter is one of:\nvdom=root (Single\
+          \ VDOM)\nvdom=vdom1,vdom2 (Multiple VDOMs)\nvdom=* (All VDOMs)\n"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+        x-exportParamName: "Vdom"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              status:
+                type: "string"
+                description: "http status message"
+              http_status:
+                type: "integer"
+                description: "http status code"
+              msg:
+                type: "string"
+                description: "Message returned by FPAM"
+              http_method:
+                type: "string"
+                description: "http method"
+              mkey:
+                type: "integer"
+                description: "folder id"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API"
+        "401":
+          description: "Not Authorized: Request without successful login session"
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource. "
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. The offended source is temporarily blocked for certain amount\
+            \ of time."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request "
+  /cmdb/secret/folder:
+    post:
+      tags:
+      - "secret/folder"
+      summary: "Create object(s) in this table.\n Access Group: secretgrp"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Possible parameters to go in the body for the request"
+        required: true
+        schema:
+          $ref: "#/definitions/body_5"
+        x-exportParamName: "Body"
+      - name: "vdom"
+        in: "query"
+        description: "Specify the Virtual Domain(s) from which results are returned\
+          \ or changes are applied to. If this parameter is not provided, the management\
+          \ VDOM will be used. If the admin does not have access to the VDOM, a permission\
+          \ error will be returned.\nThe URL parameter is one of:\nvdom=root (Single\
+          \ VDOM)\nvdom=vdom1,vdom2 (Multiple VDOMs)\nvdom=* (All VDOMs)\n"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+        x-exportParamName: "Vdom"
+      - name: "action"
+        in: "query"
+        description: "If supported, an action can be specified.\n_clone_: Clone this\
+          \ specific resource.\nWhen *action=clone* is set, the extra parameters *nkey*\
+          \ must be provided.\n__*Note:*__ If this parameter is provided when not\
+          \ supported, the action will be ignored and an “invalid request” error will\
+          \ be returned.\n"
+        required: false
+        type: "string"
+        enum:
+        - "clone"
+        x-exportParamName: "Action"
+        x-optionalDataType: "String"
+      - name: "nkey"
+        in: "query"
+        description: " If *action=clone*, use *nkey* to specify the ID for the new\
+          \ resource to be created.\nFor example, to clone `address1` to `address1_clone`,\
+          \ use:\n__action=clone&nkey=address1_clone__\n__*Note:*__ This parameter\
+          \ can only be used when the *action* parameter is set to *clone*.\n"
+        required: false
+        type: "string"
+        x-exportParamName: "Nkey"
+        x-optionalDataType: "String"
+      responses:
+        "200":
+          description: "OK: Request returns successful"
+          schema:
+            properties:
+              status:
+                type: "string"
+                description: "http status message"
+              http_status:
+                type: "integer"
+                description: "http status code"
+              msg:
+                type: "string"
+                description: "Message returned by FPAM"
+              http_method:
+                type: "string"
+                description: "http method"
+              mkey:
+                type: "integer"
+                description: "folder id"
+        "400":
+          description: "Bad Request: Request cannot be processed by the API"
+        "401":
+          description: "Not Authorized: Request without successful login session"
+        "403":
+          description: "Forbidden: Request is missing CSRF token or administrator\
+            \ is missing access profile permissions."
+        "404":
+          description: "Resource Not Found: Unable to find the specified resource."
+        "405":
+          description: "Method Not Allowed: Specified HTTP method is not allowed for\
+            \ this resource. "
+        "413":
+          description: "Request Entity Too Large: Request cannot be processed due\
+            \ to large entity "
+        "424":
+          description: "Failed Dependency: Fail dependency can be duplicate resource,\
+            \ missing required parameter, missing required attribute, invalid attribute\
+            \ value"
+        "429":
+          description: "Access temporarily blocked: Maximum failed authentications\
+            \ reached. The offended source is temporarily blocked for certain amount\
+            \ of time."
+        "500":
+          description: "Internal Server Error: Internal error when processing the\
+            \ request "
+securityDefinitions:
+  APIKeyQueryParam:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  cmdbsecretdatabaseid_totpsetting:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "Use FortiPAM as the TOTP generator."
+        enum:
+        - "enable"
+        - "disable"
+      use-template-setting:
+        type: "string"
+        description: "Use totp settings from template."
+        enum:
+        - "enable"
+        - "disable"
+      totp-length:
+        type: "integer"
+        description: "Length of TOTP."
+        minimum: 4
+        maximum: 9
+      totp-duration:
+        type: "integer"
+        description: "Duration of TOTP."
+        minimum: 30
+        maximum: 90
+      hash-type:
+        type: "string"
+        description: "Hash algo of TOTP."
+        enum:
+        - "hmac-sha1"
+        - "hmac-sha256"
+        - "hmac-sha512"
+      shared-key:
+        type: "string"
+        description: "Key of TOTP."
+  cmdbsecretdatabaseid_userpermission:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Permission ID."
+        minimum: 0
+        maximum: 4294967295
+      user-name:
+        type: "array"
+        description: "User name."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_username"
+      permission:
+        type: "string"
+        description: "Secret permission option.   \nnone:No Permissions.   \nlist:List\
+          \ permission.   \nview:View permission.   \nedit:Edit permission.   \nowner:Owner\
+          \ permission."
+        enum:
+        - "none"
+        - "list"
+        - "view"
+        - "edit"
+        - "owner"
+  cmdbsecretfolderid_grouppermission:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Permision ID."
+        minimum: 0
+        maximum: 4294967295
+      group-name:
+        type: "array"
+        description: "Group name."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_groupname"
+      folder-permission:
+        type: "string"
+        description: "Polder permission option.   \nnone:No permission.   \nview:View\
+          \ permission.   \nadd-secret:Add secret permission.   \nedit:Edit permission.\
+          \   \nowner:Owner permission."
+        enum:
+        - "none"
+        - "view"
+        - "add-secret"
+        - "edit"
+        - "owner"
+      secret-permission:
+        type: "string"
+        description: "Secret permission option.   \nnone:No Permissions.   \nlist:List\
+          \ permission.   \nview:View permission.   \nedit:Edit permission.   \nowner:Owner\
+          \ permission."
+        enum:
+        - "none"
+        - "list"
+        - "view"
+        - "edit"
+        - "owner"
+  cmdbsecretdatabaseid_groupname:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Group name."
+        maxLength: 35
+  cmdbsecretdatabaseid_addresswhitelist:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Whitelist address/group."
+        maxLength: 79
+  cmdbsecretdatabaseid_addressblacklist:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Blacklist address/group."
+        maxLength: 79
+  body:
+    required:
+    - "av-profile"
+    - "av-scan"
+    - "dlp-sensor"
+    - "dlp-status"
+    - "field"
+    - "folder"
+    - "id"
+    - "name"
+    - "rdp-event-filter"
+    - "rdp-event-filter-profile"
+    - "ssh-filter"
+    - "ssh-filter-profile"
+    - "template"
+    properties:
+      id:
+        type: "integer"
+        description: "Secret ID."
+        minimum: 1
+        maximum: 4294967294
+      name:
+        type: "string"
+        description: "Secret name."
+        maxLength: 79
+      target:
+        type: "string"
+        description: "Secret target name."
+        maxLength: 64
+      target-privilege-account:
+        type: "string"
+        description: "Enable/disable the current secret as the target privilege account."
+        enum:
+        - "enable"
+        - "disable"
+      pwd-chg-use-policy-default:
+        type: "string"
+        description: "Enable/Disable using policy default for Password Changer   \n\
+          enable:Enable setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      heartbeat-use-policy-default:
+        type: "string"
+        description: "Enable/Disable using policy default for Password Heartbeat \
+          \  \nenable:Enable setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      folder:
+        type: "integer"
+        description: "ID of parent folder."
+        minimum: 0
+        maximum: 4294967295
+      template:
+        type: "string"
+        description: "Secret template name."
+        maxLength: 79
+      associated-secret:
+        type: "integer"
+        description: "Associated secret setting."
+        minimum: 0
+        maximum: 4294967295
+      ssh-connect-with:
+        type: "string"
+        description: "Connect to the target server with current secret or using associate\
+          \ secret.   \nself:Connect and authenticate to server using current secret.\
+          \   \nassociate-secret:Connect and authenticate to server using associate\
+          \ secret."
+        enum:
+        - "self"
+        - "associate-secret"
+      ssh-auto-password:
+        type: "string"
+        description: "Automatically send password to server when privileged command\
+          \ (e.g., sudo) in SSH terminal detected.   \nenable:Enable setting.   \n\
+          disable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      ztna-tags-match-logic:
+        type: "string"
+        description: "ZTNA tag matching logic.   \nor:Match ZTNA tags using a logical\
+          \ OR operator.   \nand:Match ZTNA tags using a logical AND operator."
+        enum:
+        - "or"
+        - "and"
+      rsa-sign-algo:
+        type: "string"
+        description: "Signing algorithm of RSA-based publicKey authentication for\
+          \ ssh launcher.   \nssh-rsa:RSA publicKey authentication using RSA SHA-1\
+          \ signing algorithm.   \nrsa-sha2-256:RSA publicKey authentication using\
+          \ RSA SHA-256 signing algorithm.   \nrsa-sha2-512:RSA publicKey authentication\
+          \ using RSA SHA-512 signing algorithm."
+        enum:
+        - "ssh-rsa"
+        - "rsa-sha2-256"
+        - "rsa-sha2-512"
+      keyboard-layout:
+        type: "string"
+        description: "Keyboard layout (Applies to web-rdp only).   \nar-101:Arabic\
+          \ (101).   \nar-102:Arabic (102).   \nar-102-azerty:Arabic (102) AZERTY.\
+          \   \ncan-mul:Canadian Multilingual Standard.   \ncz:Czech.   \ncz-qwerty:Czech\
+          \ (QWERTY).   \ncz-pr:Czech Programmers.   \nda:Danish.   \nnl:Dutch.  \
+          \ \nde:German.   \nde-ch:German, Switzerland.   \nde-ibm:German (IBM). \
+          \  \nen-uk:English, United Kingdom.   \nen-uk-ext:English, United Kingdom\
+          \ Extended.   \nen-us:English, United States.   \nen-us-dvorak:English,\
+          \ United States-Dvorak.   \nes:Spanish.   \nes-var:Spanish Variation.  \
+          \ \nfi:Finish.   \nfi-sami:Finnish with Sami.   \nfr:French.   \nfr-ca:French,\
+          \ Canada.   \nfr-ch:French, Switzerland.   \nfr-be:French, Belgian.   \n\
+          hr:Croatian.   \nhu:Hungarian.   \nhu-101:Hungarian 101-Key.   \nit:Italian.\
+          \   \nit-142:Italian (142).   \nja:Japanese.   \nko:Korean.   \nlt:Lithuanian.\
+          \   \nlt-ibm:Lithuanian IBM.   \nlt-std:Lithuanian Standard.   \nlav-std:Latvian\
+          \ (Standard).   \nlav-leg:Latvian (Legacy).   \nmk:Macedonian (FYROM). \
+          \  \nmk-std:Macedonia (FYROM) - Standard.   \nno:Norwegian.   \nno-sami:Norwegian\
+          \ with Sami.   \npol-214:Polish (214).   \npol-pr:Polish (Programmers).\
+          \   \npt:Portuguese.   \npt-br:Portuguese (Brazilian ABNT).   \npt-br-abnt2:Portuguese\
+          \ (Brazilian ABNT2).   \nru:Russian.   \nru-mne:Russian - Mnemonic.   \n\
+          ru-t:Russian (Typewriter).   \nsl:Slovenian.   \nsv:Swedish.   \nsv-sami:Swedish\
+          \ with Sami.   \ntuk:Turkmen.   \ntur-f:Turkish F.   \ntur-q:Turkish Q.\
+          \   \nzh-sym-sg-us:Chinese (Simplified, Singapore) - US keyboard.   \nzh-sym-us:Chinese\
+          \ (Simplified) - US Keyboard.   \nzh-tr-hk:Chinese (Traditional, Hong Kong\
+          \ S.A.R.).   \nzh-tr-mo:Chinese (Traditional Macao S.A.R.) - US Keyboard.\
+          \   \nzh-tr-us:Chinese (Traditional) - US keyboard."
+        enum:
+        - "ar-101"
+        - "ar-102"
+        - "ar-102-azerty"
+        - "can-mul"
+        - "cz"
+        - "cz-qwerty"
+        - "cz-pr"
+        - "da"
+        - "nl"
+        - "de"
+        - "de-ch"
+        - "de-ibm"
+        - "en-uk"
+        - "en-uk-ext"
+        - "en-us"
+        - "en-us-dvorak"
+        - "es"
+        - "es-var"
+        - "fi"
+        - "fi-sami"
+        - "fr"
+        - "fr-ca"
+        - "fr-ch"
+        - "fr-be"
+        - "hr"
+        - "hu"
+        - "hu-101"
+        - "it"
+        - "it-142"
+        - "ja"
+        - "ko"
+        - "lt"
+        - "lt-ibm"
+        - "lt-std"
+        - "lav-std"
+        - "lav-leg"
+        - "mk"
+        - "mk-std"
+        - "no"
+        - "no-sami"
+        - "pol-214"
+        - "pol-pr"
+        - "pt"
+        - "pt-br"
+        - "pt-br-abnt2"
+        - "ru"
+        - "ru-mne"
+        - "ru-t"
+        - "sl"
+        - "sv"
+        - "sv-sami"
+        - "tuk"
+        - "tur-f"
+        - "tur-q"
+        - "zh-sym-sg-us"
+        - "zh-sym-us"
+        - "zh-tr-hk"
+        - "zh-tr-mo"
+        - "zh-tr-us"
+      description:
+        type: "string"
+        description: "Description."
+        maxLength: 255
+      password-changer:
+        type: "string"
+        description: "Setting of password changer.   \nenable:Enable setting.   \n\
+          disable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      password-heartbeat:
+        type: "string"
+        description: "Setting of password heartbeat.   \nenable:Enable setting.  \
+          \ \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      checkout:
+        type: "string"
+        description: "Setting of checkout.   \nenable:Enable setting.   \ndisable:Disable\
+          \ setting."
+        enum:
+        - "enable"
+        - "disable"
+      recording:
+        type: "string"
+        description: "Setting of screen recording.   \nenable:Enable setting.   \n\
+          disable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      need-approval:
+        type: "string"
+        description: "Setting of approval for launching secret.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      need-approval-job:
+        type: "string"
+        description: "Setting of approval for activating secret job.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      proxy:
+        type: "string"
+        description: "Setting of proxy for secret.   \nenable:Enable setting.   \n\
+          disable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      ssh-filter:
+        type: "string"
+        description: "Setting of if secret need ssh filter profile.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      av-scan:
+        type: "string"
+        description: "Setting of if secret need antivirus profile.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      dlp-status:
+        type: "string"
+        description: "Setting of if seceret need dlp profile.   \nenable:Enable setting.\
+          \   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      rdp-event-filter:
+        type: "string"
+        description: "Setting of if RDP secret need event log filter profile.   \n\
+          enable:Enable setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      rdp-security-level:
+        type: "string"
+        description: "RDP Security Level   \nrdp:Standard RDP encryption (web-rdp\
+          \ only).   \ntls:RDP over TLS.   \nnla:Network Level Authentication (CredSSP).\
+          \   \nbest-effort:Best effort (use NLA if server supports, RDP over TLS\
+          \ otherwise)."
+        enum:
+        - "rdp"
+        - "tls"
+        - "nla"
+        - "best-effort"
+      rdp-restricted-admin-mode:
+        type: "string"
+        description: "Credential-less logon over NLA.   \nenable:Enable setting. \
+          \  \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      block-rdp-clipboard:
+        type: "string"
+        description: "Setting of whether block clipboard copy & paste of rdp auth\
+          \ proxy.   \nenable:Enable setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      pwd-chg-sch-frequency:
+        type: "string"
+        description: "Password Change Frequency. Repeats Monthly/Weekly/Daily   \n\
+          month:Repeat Monthly   \nweek:Repeat Weekly.   \nday:Repeat Daily."
+        enum:
+        - "month"
+        - "week"
+        - "day"
+      pwd-chg-sch-interval:
+        type: "integer"
+        description: "Password Change Interval. Ex. Every x (month/week/day(s), based\
+          \ on frequency)"
+        minimum: 1
+        maximum: 400
+      pwd-chg-sch-month-type:
+        type: "string"
+        description: "Password change schedule Monthly Type.   \nfirst:Repeat in the\
+          \ first week of each month.   \nsecond:Repeat in the second week of each\
+          \ month.   \nthird:Repeat in the third week of each month.   \nlast:Repeat\
+          \ in the last week of each month.   \nlast-day:Repeat on the last day of\
+          \ each month.   \nspecific:Repeat on a specific day of each month."
+        enum:
+        - "first"
+        - "second"
+        - "third"
+        - "last"
+        - "last-day"
+        - "specific"
+      pwd-chg-sch-month-day:
+        type: "string"
+        description: "Password change schedule month days. Repeat Monthly on specified\
+          \ date(s). (May be many)   \n1:1   \n2:2   \n3:3   \n4:4   \n5:5   \n6:6\
+          \   \n7:7   \n8:8   \n9:9   \n10:10   \n11:11   \n12:12   \n13:13   \n14:14\
+          \   \n15:15   \n16:16   \n17:17   \n18:18   \n19:19   \n20:20   \n21:21\
+          \   \n22:22   \n23:23   \n24:24   \n25:25   \n26:26   \n27:27   \n28:28"
+        enum:
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
+        - "8"
+        - "9"
+        - "10"
+        - "11"
+        - "12"
+        - "13"
+        - "14"
+        - "15"
+        - "16"
+        - "17"
+        - "18"
+        - "19"
+        - "20"
+        - "21"
+        - "22"
+        - "23"
+        - "24"
+        - "25"
+        - "26"
+        - "27"
+        - "28"
+      pwd-chg-sch-week-day:
+        type: "string"
+        description: "Password change schedule week days. (May be many)   \nsunday:Sunday.\
+          \   \nmonday:Monday.   \ntuesday:Tuesday.   \nwednesday:Wednesday.   \n\
+          thursday:Thursday.   \nfriday:Friday.   \nsaturday:Saturday."
+        enum:
+        - "sunday"
+        - "monday"
+        - "tuesday"
+        - "wednesday"
+        - "thursday"
+        - "friday"
+        - "saturday"
+      pwd-chg-sch-start-date:
+        type: "string"
+        format: "date-time"
+        description: "Password change schedule start date"
+      heartbeat-interval:
+        type: "integer"
+        description: "Heartbeat interval(mins)."
+        minimum: 5
+        maximum: 44640
+      heartbeat-start-time:
+        type: "string"
+        format: "date-time"
+        description: "Password heartbeat start time"
+      checkout-duration:
+        type: "integer"
+        description: "Setting of checkout duration(minutes)."
+        minimum: 3
+        maximum: 120
+      checkin-pwd-change:
+        type: "string"
+        description: "Setting to change password on checkin   \nenable:Enable setting.\
+          \   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      checkout-duration-renew:
+        type: "string"
+        description: "Setting to renew checkout duration   \nenable:Enable setting.\
+          \   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      checkout-renew-times:
+        type: "integer"
+        description: "Setting of the max amount of times you can renew checkout."
+        minimum: 1
+        maximum: 5
+      tunnel-encryption:
+        type: "string"
+        description: "Setting of using encrypted tunnel.   \nenable:Enable setting.\
+          \   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      approval-profile:
+        type: "string"
+        description: "Setting of approval-profile for secret."
+        maxLength: 79
+      ssh-filter-profile:
+        type: "string"
+        description: "SSH filter profile."
+        maxLength: 79
+      dlp-sensor:
+        type: "string"
+        description: "DLP sensor name."
+        maxLength: 79
+      av-profile:
+        type: "string"
+        description: "Name of Antivirus profile."
+        maxLength: 79
+      rdp-event-filter-profile:
+        type: "string"
+        description: "RDP session event filter profile."
+        maxLength: 79
+      inherit-permission:
+        type: "string"
+        description: "Enable/disable inherit permission from folder.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      ssh-service-status:
+        type: "string"
+        description: "SSH service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      ssh-service-port:
+        type: "integer"
+        description: "SSH service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      rdp-service-status:
+        type: "string"
+        description: "RDP service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      rdp-service-port:
+        type: "integer"
+        description: "RDP service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      vnc-service-status:
+        type: "string"
+        description: "VNC service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      vnc-service-port:
+        type: "integer"
+        description: "VNC service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      ldaps-service-status:
+        type: "string"
+        description: "LDAPS service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      ldaps-service-port:
+        type: "integer"
+        description: "LDAPS service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      samba-service-status:
+        type: "string"
+        description: "Samba service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      samba-service-port:
+        type: "integer"
+        description: "Samba service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      display-num:
+        type: "integer"
+        description: "Display number for vnc (unset to use default)"
+        minimum: 0
+        maximum: 255
+      address-blacklist:
+        type: "array"
+        description: "RDP target blacklist addresses."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_addressblacklist"
+      address-whitelist:
+        type: "array"
+        description: "RDP target whitelist addresses."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_addresswhitelist"
+      ztna-ems-tag:
+        type: "array"
+        description: "ZTNA ems tag that controls launching"
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_ztnaemstag"
+      user-permission:
+        type: "array"
+        description: "Configure user permission."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_userpermission"
+      group-permission:
+        type: "array"
+        description: "Configure group permission."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_grouppermission"
+      field:
+        type: "array"
+        description: "Configure secret fields. Current secret credential information"
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_field"
+      totp-setting:
+        type: "array"
+        description: "Third party time based one time password setting. For Fortitoken\
+          \ totp activation support, please use internal/secret-ftk api to update\
+          \ this field."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_totpsetting"
+  body_3:
+    required:
+    - "secret-id"
+    properties:
+      secret-id:
+        type: "integer"
+        description: "Secret ID."
+  body_4:
+    required:
+    - "group-permission"
+    - "id"
+    - "inherit-permission"
+    - "name"
+    - "parent-folder"
+    - "user-permission"
+    properties:
+      id:
+        type: "integer"
+        description: "Folder ID."
+        minimum: 1
+        maximum: 4294967294
+      name:
+        type: "string"
+        description: "Folder name."
+        maxLength: 79
+      inherit-policy:
+        type: "string"
+        description: "Enable/disable inherit policy from parent.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      inherit-permission:
+        type: "string"
+        description: "Enable/disable inherit permission from parent.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      inherit-folder-ztna:
+        type: "string"
+        description: "Enable/disable inherit ztna control from parent.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      folder-type:
+        type: "string"
+        description: "Personal/Regular folder.   \npersonal:Personal folder.   \n\
+          public:Public folder"
+        enum:
+        - "personal"
+        - "public"
+      secret-policy:
+        type: "string"
+        description: "Secret policy name."
+        maxLength: 79
+      parent-folder:
+        type: "integer"
+        description: "ID of parent folder, Root == 0"
+        minimum: 0
+        maximum: 4294967295
+      user-permission:
+        type: "array"
+        description: "Configure user permission."
+        items:
+          $ref: "#/definitions/cmdbsecretfolderid_userpermission"
+      group-permission:
+        type: "array"
+        description: "Configure group permission."
+        items:
+          $ref: "#/definitions/cmdbsecretfolderid_grouppermission"
+  cmdbsecretdatabaseid_field:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Field ID."
+        minimum: 1
+        maximum: 10
+      name:
+        type: "string"
+        description: "Field name."
+        maxLength: 79
+      value:
+        type: "string"
+        description: "Value of the field."
+        maxLength: 8191
+  body_1:
+    required:
+    - "field"
+    - "folder"
+    - "id"
+    - "inherit-permission"
+    - "name"
+    - "template"
+    properties:
+      id:
+        type: "integer"
+        description: "Secret ID."
+        minimum: 0
+        maximum: 4294967294
+      name:
+        type: "string"
+        description: "Secret name."
+        maxLength: 79
+      target:
+        type: "string"
+        description: "Secret target name."
+        maxLength: 64
+      target-privilege-account:
+        type: "string"
+        description: "Enable/disable the current secret as the target privilege account."
+        enum:
+        - "enable"
+        - "disable"
+      pwd-chg-use-policy-default:
+        type: "string"
+        description: "Enable/Disable using policy default for Password Changer   \n\
+          enable:Enable setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      heartbeat-use-policy-default:
+        type: "string"
+        description: "Enable/Disable using policy default for Password Heartbeat \
+          \  \nenable:Enable setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      folder:
+        type: "integer"
+        description: "ID of parent folder."
+        minimum: 0
+        maximum: 4294967295
+      template:
+        type: "string"
+        description: "Secret template name."
+        maxLength: 79
+      associated-secret:
+        type: "integer"
+        description: "Associated secret setting."
+        minimum: 0
+        maximum: 4294967295
+      ssh-connect-with:
+        type: "string"
+        description: "Connect to the target server with current secret or using associate\
+          \ secret.   \nself:Connect and authenticate to server using current secret.\
+          \   \nassociate-secret:Connect and authenticate to server using associate\
+          \ secret."
+        enum:
+        - "self"
+        - "associate-secret"
+      ssh-auto-password:
+        type: "string"
+        description: "Automatically send password to server when privileged command\
+          \ (e.g., sudo) in SSH terminal detected.   \nenable:Enable setting.   \n\
+          disable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      ztna-tags-match-logic:
+        type: "string"
+        description: "ZTNA tag matching logic.   \nor:Match ZTNA tags using a logical\
+          \ OR operator.   \nand:Match ZTNA tags using a logical AND operator."
+        enum:
+        - "or"
+        - "and"
+      rsa-sign-algo:
+        type: "string"
+        description: "Signing algorithm of RSA-based publicKey authentication for\
+          \ ssh launcher.   \nssh-rsa:RSA publicKey authentication using RSA SHA-1\
+          \ signing algorithm.   \nrsa-sha2-256:RSA publicKey authentication using\
+          \ RSA SHA-256 signing algorithm.   \nrsa-sha2-512:RSA publicKey authentication\
+          \ using RSA SHA-512 signing algorithm."
+        enum:
+        - "ssh-rsa"
+        - "rsa-sha2-256"
+        - "rsa-sha2-512"
+      keyboard-layout:
+        type: "string"
+        description: "Keyboard layout (Applies to web-rdp only).   \nar-101:Arabic\
+          \ (101).   \nar-102:Arabic (102).   \nar-102-azerty:Arabic (102) AZERTY.\
+          \   \ncan-mul:Canadian Multilingual Standard.   \ncz:Czech.   \ncz-qwerty:Czech\
+          \ (QWERTY).   \ncz-pr:Czech Programmers.   \nda:Danish.   \nnl:Dutch.  \
+          \ \nde:German.   \nde-ch:German, Switzerland.   \nde-ibm:German (IBM). \
+          \  \nen-uk:English, United Kingdom.   \nen-uk-ext:English, United Kingdom\
+          \ Extended.   \nen-us:English, United States.   \nen-us-dvorak:English,\
+          \ United States-Dvorak.   \nes:Spanish.   \nes-var:Spanish Variation.  \
+          \ \nfi:Finish.   \nfi-sami:Finnish with Sami.   \nfr:French.   \nfr-ca:French,\
+          \ Canada.   \nfr-ch:French, Switzerland.   \nfr-be:French, Belgian.   \n\
+          hr:Croatian.   \nhu:Hungarian.   \nhu-101:Hungarian 101-Key.   \nit:Italian.\
+          \   \nit-142:Italian (142).   \nja:Japanese.   \nko:Korean.   \nlt:Lithuanian.\
+          \   \nlt-ibm:Lithuanian IBM.   \nlt-std:Lithuanian Standard.   \nlav-std:Latvian\
+          \ (Standard).   \nlav-leg:Latvian (Legacy).   \nmk:Macedonian (FYROM). \
+          \  \nmk-std:Macedonia (FYROM) - Standard.   \nno:Norwegian.   \nno-sami:Norwegian\
+          \ with Sami.   \npol-214:Polish (214).   \npol-pr:Polish (Programmers).\
+          \   \npt:Portuguese.   \npt-br:Portuguese (Brazilian ABNT).   \npt-br-abnt2:Portuguese\
+          \ (Brazilian ABNT2).   \nru:Russian.   \nru-mne:Russian - Mnemonic.   \n\
+          ru-t:Russian (Typewriter).   \nsl:Slovenian.   \nsv:Swedish.   \nsv-sami:Swedish\
+          \ with Sami.   \ntuk:Turkmen.   \ntur-f:Turkish F.   \ntur-q:Turkish Q.\
+          \   \nzh-sym-sg-us:Chinese (Simplified, Singapore) - US keyboard.   \nzh-sym-us:Chinese\
+          \ (Simplified) - US Keyboard.   \nzh-tr-hk:Chinese (Traditional, Hong Kong\
+          \ S.A.R.).   \nzh-tr-mo:Chinese (Traditional Macao S.A.R.) - US Keyboard.\
+          \   \nzh-tr-us:Chinese (Traditional) - US keyboard."
+        enum:
+        - "ar-101"
+        - "ar-102"
+        - "ar-102-azerty"
+        - "can-mul"
+        - "cz"
+        - "cz-qwerty"
+        - "cz-pr"
+        - "da"
+        - "nl"
+        - "de"
+        - "de-ch"
+        - "de-ibm"
+        - "en-uk"
+        - "en-uk-ext"
+        - "en-us"
+        - "en-us-dvorak"
+        - "es"
+        - "es-var"
+        - "fi"
+        - "fi-sami"
+        - "fr"
+        - "fr-ca"
+        - "fr-ch"
+        - "fr-be"
+        - "hr"
+        - "hu"
+        - "hu-101"
+        - "it"
+        - "it-142"
+        - "ja"
+        - "ko"
+        - "lt"
+        - "lt-ibm"
+        - "lt-std"
+        - "lav-std"
+        - "lav-leg"
+        - "mk"
+        - "mk-std"
+        - "no"
+        - "no-sami"
+        - "pol-214"
+        - "pol-pr"
+        - "pt"
+        - "pt-br"
+        - "pt-br-abnt2"
+        - "ru"
+        - "ru-mne"
+        - "ru-t"
+        - "sl"
+        - "sv"
+        - "sv-sami"
+        - "tuk"
+        - "tur-f"
+        - "tur-q"
+        - "zh-sym-sg-us"
+        - "zh-sym-us"
+        - "zh-tr-hk"
+        - "zh-tr-mo"
+        - "zh-tr-us"
+      description:
+        type: "string"
+        description: "Description."
+        maxLength: 255
+      password-changer:
+        type: "string"
+        description: "Setting of password changer.   \nenable:Enable setting.   \n\
+          disable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      password-heartbeat:
+        type: "string"
+        description: "Setting of password heartbeat.   \nenable:Enable setting.  \
+          \ \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      checkout:
+        type: "string"
+        description: "Setting of checkout.   \nenable:Enable setting.   \ndisable:Disable\
+          \ setting."
+        enum:
+        - "enable"
+        - "disable"
+      recording:
+        type: "string"
+        description: "Setting of screen recording.   \nenable:Enable setting.   \n\
+          disable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      need-approval:
+        type: "string"
+        description: "Setting of approval for launching secret.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      need-approval-job:
+        type: "string"
+        description: "Setting of approval for activating secret job.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      proxy:
+        type: "string"
+        description: "Setting of proxy for secret.   \nenable:Enable setting.   \n\
+          disable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      ssh-filter:
+        type: "string"
+        description: "Setting of if secret need ssh filter profile.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      av-scan:
+        type: "string"
+        description: "Setting of if secret need antivirus profile.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      dlp-status:
+        type: "string"
+        description: "Setting of if seceret need dlp profile.   \nenable:Enable setting.\
+          \   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      rdp-security-level:
+        type: "string"
+        description: "RDP Security Level   \nrdp:Standard RDP encryption (web-rdp\
+          \ only).   \ntls:RDP over TLS.   \nnla:Network Level Authentication (CredSSP).\
+          \   \nbest-effort:Best effort (use NLA if server supports, RDP over TLS\
+          \ otherwise)."
+        enum:
+        - "rdp"
+        - "tls"
+        - "nla"
+        - "best-effort"
+      rdp-restricted-admin-mode:
+        type: "string"
+        description: "Credential-less logon over NLA.   \nenable:Enable setting. \
+          \  \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      block-rdp-clipboard:
+        type: "string"
+        description: "Setting of whether block clipboard copy & paste of rdp auth\
+          \ proxy.   \nenable:Enable setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      pwd-chg-sch-frequency:
+        type: "string"
+        description: "Password Change Frequency. Repeats Monthly/Weekly/Daily   \n\
+          month:Repeat Monthly   \nweek:Repeat Weekly.   \nday:Repeat Daily."
+        enum:
+        - "month"
+        - "week"
+        - "day"
+      pwd-chg-sch-interval:
+        type: "integer"
+        description: "Password Change Interval. Ex. Every x (month/week/day(s), based\
+          \ on frequency)"
+        minimum: 1
+        maximum: 400
+      pwd-chg-sch-month-type:
+        type: "string"
+        description: "Password change schedule Monthly Type.   \nfirst:Repeat in the\
+          \ first week of each month.   \nsecond:Repeat in the second week of each\
+          \ month.   \nthird:Repeat in the third week of each month.   \nlast:Repeat\
+          \ in the last week of each month.   \nlast-day:Repeat on the last day of\
+          \ each month.   \nspecific:Repeat on a specific day of each month."
+        enum:
+        - "first"
+        - "second"
+        - "third"
+        - "last"
+        - "last-day"
+        - "specific"
+      pwd-chg-sch-month-day:
+        type: "string"
+        description: "Password change schedule month days. Repeat Monthly on specified\
+          \ date(s). (May be many)   \n1:1   \n2:2   \n3:3   \n4:4   \n5:5   \n6:6\
+          \   \n7:7   \n8:8   \n9:9   \n10:10   \n11:11   \n12:12   \n13:13   \n14:14\
+          \   \n15:15   \n16:16   \n17:17   \n18:18   \n19:19   \n20:20   \n21:21\
+          \   \n22:22   \n23:23   \n24:24   \n25:25   \n26:26   \n27:27   \n28:28"
+        enum:
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+        - "7"
+        - "8"
+        - "9"
+        - "10"
+        - "11"
+        - "12"
+        - "13"
+        - "14"
+        - "15"
+        - "16"
+        - "17"
+        - "18"
+        - "19"
+        - "20"
+        - "21"
+        - "22"
+        - "23"
+        - "24"
+        - "25"
+        - "26"
+        - "27"
+        - "28"
+      pwd-chg-sch-week-day:
+        type: "string"
+        description: "Password change schedule week days. (May be many)   \nsunday:Sunday.\
+          \   \nmonday:Monday.   \ntuesday:Tuesday.   \nwednesday:Wednesday.   \n\
+          thursday:Thursday.   \nfriday:Friday.   \nsaturday:Saturday."
+        enum:
+        - "sunday"
+        - "monday"
+        - "tuesday"
+        - "wednesday"
+        - "thursday"
+        - "friday"
+        - "saturday"
+      pwd-chg-sch-start-date:
+        type: "string"
+        format: "date-time"
+        description: "Password change schedule start date"
+      heartbeat-interval:
+        type: "integer"
+        description: "Heartbeat interval(mins)."
+        minimum: 5
+        maximum: 44640
+      heartbeat-start-time:
+        type: "string"
+        format: "date-time"
+        description: "Password heartbeat start time"
+      checkout-duration:
+        type: "integer"
+        description: "Setting of checkout duration(minutes)."
+        minimum: 3
+        maximum: 120
+      checkin-pwd-change:
+        type: "string"
+        description: "Setting to change password on checkin   \nenable:Enable setting.\
+          \   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      checkout-duration-renew:
+        type: "string"
+        description: "Setting to renew checkout duration   \nenable:Enable setting.\
+          \   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      checkout-renew-times:
+        type: "integer"
+        description: "Setting of the max amount of times you can renew checkout."
+        minimum: 1
+        maximum: 5
+      tunnel-encryption:
+        type: "string"
+        description: "Setting of using encrypted tunnel.   \nenable:Enable setting.\
+          \   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      approval-profile:
+        type: "string"
+        description: "Setting of approval-profile for secret."
+        maxLength: 79
+      ssh-filter-profile:
+        type: "string"
+        description: "SSH filter profile."
+        maxLength: 79
+      dlp-sensor:
+        type: "string"
+        description: "DLP sensor name."
+        maxLength: 79
+      av-profile:
+        type: "string"
+        description: "Name of Antivirus profile."
+        maxLength: 79
+      inherit-permission:
+        type: "string"
+        description: "Enable/disable inherit permission from folder.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      ssh-service-status:
+        type: "string"
+        description: "SSH service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      ssh-service-port:
+        type: "integer"
+        description: "SSH service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      rdp-service-status:
+        type: "string"
+        description: "RDP service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      rdp-service-port:
+        type: "integer"
+        description: "RDP service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      vnc-service-status:
+        type: "string"
+        description: "VNC service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      vnc-service-port:
+        type: "integer"
+        description: "VNC service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      ldaps-service-status:
+        type: "string"
+        description: "LDAPS service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      ldaps-service-port:
+        type: "integer"
+        description: "LDAPS service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      samba-service-status:
+        type: "string"
+        description: "Samba service status.   \nup:Service up on server.   \ndown:Service\
+          \ down on server."
+        enum:
+        - "up"
+        - "down"
+      samba-service-port:
+        type: "integer"
+        description: "Samba service port (unset to use default)."
+        minimum: 0
+        maximum: 65535
+      display-num:
+        type: "integer"
+        description: "Display number for vnc (unset to use default)"
+        minimum: 0
+        maximum: 255
+      address-blacklist:
+        type: "array"
+        description: "RDP target blacklist addresses."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_addressblacklist"
+      address-whitelist:
+        type: "array"
+        description: "RDP target whitelist addresses."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_addresswhitelist"
+      ztna-ems-tag:
+        type: "array"
+        description: "ZTNA ems tag that controls launching"
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_ztnaemstag"
+      user-permission:
+        type: "array"
+        description: "Configure user permission."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_userpermission"
+      group-permission:
+        type: "array"
+        description: "Configure group permission."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_grouppermission"
+      field:
+        type: "array"
+        description: "Configure secret fields. Current secret credential information"
+        items:
+          $ref: "#/definitions/cmdbsecretdatabase_field"
+      totp-setting:
+        type: "array"
+        description: "Third party time based one time password setting. For Fortitoken\
+          \ totp activation support, please use internal/secret-ftk api to update\
+          \ this field."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_totpsetting"
+  cmdbsecretdatabaseid_username:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "User name."
+        maxLength: 64
+  body_2:
+    required:
+    - "secret-id"
+    properties:
+      secret-id:
+        type: "integer"
+        description: "Secret ID."
+  cmdbsecretfolderid_userpermission:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Permission ID."
+        minimum: 0
+        maximum: 4294967295
+      user-name:
+        type: "array"
+        description: "User name."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_username"
+      folder-permission:
+        type: "string"
+        description: "Folder permission option.   \nnone:No permission.   \nview:View\
+          \ permission.   \nadd-secret:Add secret permission.   \nedit:Edit permission.\
+          \   \nowner:Owner permission."
+        enum:
+        - "none"
+        - "view"
+        - "add-secret"
+        - "edit"
+        - "owner"
+      secret-permission:
+        type: "string"
+        description: "Secret permission option.   \nnone:No Permissions.   \nlist:List\
+          \ permission.   \nview:View permission.   \nedit:Edit permission.   \nowner:Owner\
+          \ permission."
+        enum:
+        - "none"
+        - "list"
+        - "view"
+        - "edit"
+        - "owner"
+  cmdbsecretdatabase_field:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Field ID."
+        minimum: 1
+        maximum: 10
+      name:
+        type: "string"
+        description: "Field name according to the template."
+        maxLength: 79
+      value:
+        type: "string"
+        description: "Value of the field."
+        maxLength: 8191
+  cmdbsecretdatabaseid_grouppermission:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Permision ID."
+        minimum: 0
+        maximum: 4294967295
+      group-name:
+        type: "array"
+        description: "Group name."
+        items:
+          $ref: "#/definitions/cmdbsecretdatabaseid_groupname"
+      permission:
+        type: "string"
+        description: "Secret permission option.   \nnone:No Permissions.   \nlist:List\
+          \ permission.   \nview:View permission.   \nedit:Edit permission.   \nowner:Owner\
+          \ permission."
+        enum:
+        - "none"
+        - "list"
+        - "view"
+        - "edit"
+        - "owner"
+  cmdbsecretdatabaseid_ztnaemstag:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "ZTNA ems tag."
+        maxLength: 79
+  body_5:
+    required:
+    - "group-permission"
+    - "id"
+    - "inherit-permission"
+    - "name"
+    - "parent-folder"
+    - "user-permission"
+    properties:
+      id:
+        type: "integer"
+        description: "Folder ID."
+        minimum: 0
+        maximum: 4294967294
+      name:
+        type: "string"
+        description: "Folder name."
+        maxLength: 79
+      inherit-policy:
+        type: "string"
+        description: "Enable/disable inherit policy from parent.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      inherit-permission:
+        type: "string"
+        description: "Enable/disable inherit permission from parent.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      inherit-folder-ztna:
+        type: "string"
+        description: "Enable/disable inherit ztna control from parent.   \nenable:Enable\
+          \ setting.   \ndisable:Disable setting."
+        enum:
+        - "enable"
+        - "disable"
+      folder-type:
+        type: "string"
+        description: "Personal/Regular folder.   \npersonal:Personal folder.   \n\
+          public:Public folder"
+        enum:
+        - "personal"
+        - "public"
+      secret-policy:
+        type: "string"
+        description: "Secret policy name."
+        maxLength: 79
+      parent-folder:
+        type: "integer"
+        description: "ID of parent folder, Root == 0"
+        minimum: 0
+        maximum: 4294967295
+      user-permission:
+        type: "array"
+        description: "Configure user permission."
+        items:
+          $ref: "#/definitions/cmdbsecretfolderid_userpermission"
+      group-permission:
+        type: "array"
+        description: "Configure group permission."
+        items:
+          $ref: "#/definitions/cmdbsecretfolderid_grouppermission"
