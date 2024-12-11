@@ -2,11 +2,11 @@ package fortipam
 
 import (
 	"fmt"
-	"log"
-	"strconv"
+	"github.com/antihax/optional"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/terraform-providers/terraform-provider-fortipam/fpamGo"
-	"github.com/antihax/optional"
+	"log"
+	"strconv"
 )
 
 func dataSourceCredRead(schema *schema.ResourceData, meta interface{}) error {
@@ -19,18 +19,18 @@ func dataSourceCredRead(schema *schema.ResourceData, meta interface{}) error {
 	sec_id := getId(client, auth, path, "secret")
 	log.Printf("Sec id: %d", sec_id)
 	if sec_id <= 0 {
-		return fmt.Errorf("ID retrieval failed");
+		return fmt.Errorf("ID retrieval failed")
 	}
 	sec_intf, _, sec_err := client.SecretdatabaseApi.CmdbSecretDatabaseIdGet(auth, sec_id,
-										&fpam_go.SecretdatabaseApiCmdbSecretDatabaseIdGetOpts{
-											Fieldname: optional.NewString(field),
-										})
+		&fpam_go.SecretdatabaseApiCmdbSecretDatabaseIdGetOpts{
+			Fieldname: optional.NewString(field),
+		})
 	if sec_intf == nil {
 		return fmt.Errorf("API connection error	%s", sec_err)
 	}
 	json_sec_resp := sec_intf.(map[string]interface{})
 	sec_http_status := int(json_sec_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		return fmt.Errorf("Secret retrieval failed:	%s", sec_intf)
 	}
 	result := json_sec_resp["results"].([]interface{})[0]
@@ -49,25 +49,25 @@ func dataSourceSecretCred() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"value": {
-				Computed:		true,
-				Description:	"the value of the field of the secret",
-				Sensitive:		true,
-				Type:			schema.TypeString,
+				Computed:    true,
+				Description: "the value of the field of the secret",
+				Sensitive:   true,
+				Type:        schema.TypeString,
 			},
 			"field": {
-				Description:	"the field to extract from the secret based on name",
-				Required:		true,
-				Type:			schema.TypeString,
+				Description: "the field to extract from the secret based on name",
+				Required:    true,
+				Type:        schema.TypeString,
 			},
 			"path": {
-				Description:	"full folder path to the secret	e.g. public_folder/local",
-				Required:		true,
-				Type:			schema.TypeString,
+				Description: "full folder path to the secret	e.g. public_folder/local",
+				Required:    true,
+				Type:        schema.TypeString,
 			},
 			"name": {
-				Description:	"secret name under path",
-				Required:		true,
-				Type:			schema.TypeString,
+				Description: "secret name under path",
+				Required:    true,
+				Type:        schema.TypeString,
 			},
 		},
 	}

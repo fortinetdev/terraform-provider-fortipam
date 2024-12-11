@@ -1,0 +1,1 @@
+terraform import fortipam_resource_secret.example 123

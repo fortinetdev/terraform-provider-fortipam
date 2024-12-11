@@ -1,4 +1,4 @@
-# FortiManager Terraform Provider
+# FortiPAM Terraform Provider
 
 - Website: https://www.terraform.io
 - [![Gitter chat](https://badges.gitter.im/hashicorp-terraform/Lobby.png)](https://gitter.im/hashicorp-terraform/Lobby)
@@ -40,9 +40,9 @@ $ terraform init
 
 If you wish to work on the provider, you'll first need Go installed on your machine (version 1.13+ is required).
 
-To compile the provider, run `go build`. This will build the provider and put the provider binary under current folder.
+To compile the provider, run `make build`. This will build the provider and put the provider binary in the $GOPATH/bin directory.
 
 ```sh
-$ go build
+$ make build
 ...
 ```

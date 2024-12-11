@@ -1,27 +1,27 @@
 package fortipam
 
 import (
+	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"log"
 	"strconv"
-	"context"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func ResourceSecretFolder() *schema.Resource {
 	folder_importer := ResourceFolderImport()
 
 	return &schema.Resource{
-		Read:   ResourceFolderRead,
-		Create: ResourceFolderCreate,
-		Update: ResourceFolderUpdate,
-		Delete: ResourceFolderDelete,
-		Schema: ResourceFolderSchema(),
+		Read:     ResourceFolderRead,
+		Create:   ResourceFolderCreate,
+		Update:   ResourceFolderUpdate,
+		Delete:   ResourceFolderDelete,
+		Schema:   ResourceFolderSchema(),
 		Importer: &folder_importer,
 	}
 }
 
-func ResourceFolderImport() schema.ResourceImporter{
+func ResourceFolderImport() schema.ResourceImporter {
 	return schema.ResourceImporter{
 		StateContext: ResourceFolderStateContext,
 	}
@@ -30,21 +30,21 @@ func ResourceFolderImport() schema.ResourceImporter{
 func ResourceFolderSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"parent": {
-			Description:	"full folder path to the parent folder	e.g. public_folder/local",
-			Required:		true,
-			Type:			schema.TypeString,
-			DiffSuppressFunc:	ResourcePathdSuppressDiff,
+			Description:      "full folder path to the parent folder	e.g. public_folder/local",
+			Required:         true,
+			Type:             schema.TypeString,
+			DiffSuppressFunc: ResourcePathdSuppressDiff,
 		},
 		"name": {
-			Description:	"folder name under parent folder",
-			Required:		true,
-			Type:			schema.TypeString,
-			ValidateFunc:	ResourceNameValid,
+			Description:  "folder name under parent folder",
+			Required:     true,
+			Type:         schema.TypeString,
+			ValidateFunc: ResourceNameValid,
 		},
 		"path": {
-			Description:	"full path to the folder",
-			Computed:		true,
-			Type:			schema.TypeString,
+			Description: "full path to the folder",
+			Computed:    true,
+			Type:        schema.TypeString,
 		},
 	}
 }
@@ -70,7 +70,7 @@ func ResourceFolderReadHelper(schema *schema.ResourceData, meta interface{}, id 
 	}
 	json_fld_resp := fld_intf.(map[string]interface{})
 	sec_http_status := int(json_fld_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		schema.SetId("")
 		return fmt.Errorf("Folder ID retrieval failed. Access to folder [%d] denied", int(id))
 	}
@@ -90,12 +90,11 @@ func ResourceFolderCreate(schema *schema.ResourceData, meta interface{}) error {
 	client := *terra_conf.FpamClient
 	auth := terra_conf.AuthObj
 
-	
 	parent_id := getId(client, auth, parent_folder, "folder")
 	if parent_id == 0 {
 		return fmt.Errorf("Parent folder ID retrieval failed. Access to folder [%s] denied", parent_folder)
 	}
-	folder_id := getId(client, auth, parent_folder + "/" + folder, "folder")
+	folder_id := getId(client, auth, parent_folder+"/"+folder, "folder")
 	if folder_id > 0 {
 		schema.SetId("")
 		return fmt.Errorf("Folder:%s already exist under %s", folder, parent_folder)
@@ -108,7 +107,7 @@ func ResourceFolderCreate(schema *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-//Creation assumes pre-check is always being done
+// Creation assumes pre-check is always being done
 func ResourceFolderCreateHelper(schema *schema.ResourceData, meta interface{}, folder_name string, root_id int32, root_name string) error {
 	terra_conf := meta.(TerraformConfiguration)
 	client := *terra_conf.FpamClient
@@ -124,7 +123,7 @@ func ResourceFolderCreateHelper(schema *schema.ResourceData, meta interface{}, f
 	}
 	json_sec_resp := folder_intf.(map[string]interface{})
 	sec_http_status := int(json_sec_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		return fmt.Errorf("Folder Create failed:	%s", folder_intf)
 	}
 
@@ -152,7 +151,7 @@ func ResourceFolderDelete(schema *schema.ResourceData, meta interface{}) error {
 	log.Println("folder:%d is deleted", id)
 	json_sec_resp := folder_intf.(map[string]interface{})
 	sec_http_status := int(json_sec_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		return fmt.Errorf("Folder delete failed:	%s", folder_intf)
 	}
 
@@ -184,7 +183,7 @@ func ResourceFolderUpdate(schema *schema.ResourceData, meta interface{}) error {
 	}
 	json_sec_resp := folder_intf.(map[string]interface{})
 	sec_http_status := int(json_sec_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		schema.SetId("")
 		return fmt.Errorf("Folder Create failed:	%s", folder_intf)
 	}

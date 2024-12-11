@@ -1,5 +1,7 @@
+
+
 terraform {
-//This part is required when running local binary with local_build.sh
+  //This part is required when running local binary with local_build.sh
   required_providers {
     fortipam = {
       source  = "fortipam.com/local/fortipam"
@@ -9,42 +11,42 @@ terraform {
 }
 
 provider "fortipam" {
-  base_url   = "<FPAM_HOST>"
-  access_token   = "<API_TOKEN>"
-  verify_ssl = false
+  base_url     = "<FPAM_URL>"
+  access_token = "<FPAM_TOKEN>"
+  verify_ssl   = false
 }
 
 
 data "fortipam_secret" "host" {
-  path    = "tf_test"
-  name = "terraform_sec"
+  path  = "tf_test"
+  name  = "terraform_sec"
   field = "Host"
 }
 
 data "fortipam_secret" "usr" {
-  path    = "tf_test"
-  name = "terraform_sec"
+  path  = "tf_test"
+  name  = "terraform_sec"
   field = "Username"
 }
 
 data "fortipam_secret" "pwd" {
-  path    = "tf_test"
-  name = "terraform_sec"
+  path  = "tf_test"
+  name  = "terraform_sec"
   field = "Password"
 }
 
 locals {
   fields = [
     {
-      "name" = "Host",
+      "name"  = "Host",
       "value" = data.fortipam_secret.host.value
     },
     {
-      "name" = "Username",
-      "value" =  data.fortipam_secret.usr.value
+      "name"  = "Username",
+      "value" = data.fortipam_secret.usr.value
     },
     {
-      "name" = "Password",
+      "name"  = "Password",
       "value" = data.fortipam_secret.pwd.value
     },
   ]
@@ -55,8 +57,8 @@ import {
   id = 9
 }
 resource "fortipam_resource_folder" "folder" {
-    parent = "tf_test"
-    name = "terraform"
+  parent = "tf_test"
+  name   = "terraform"
 }
 
 /*
@@ -76,13 +78,13 @@ import {
   id = 29
 }
 resource "fortipam_resource_secret" "secret" {
-  name = "terraform_sec"
-  path = "${resource.fortipam_resource_folder.folder.parent}/${resource.fortipam_resource_folder.folder.name}"
+  name     = "terraform_sec"
+  path     = "${resource.fortipam_resource_folder.folder.parent}/${resource.fortipam_resource_folder.folder.name}"
   template = "Unix Account (SSH Password)"
   dynamic "fields" {
     for_each = local.fields
     content {
-      name =  fields.value.name
+      name  = fields.value.name
       value = fields.value.value
     }
   }

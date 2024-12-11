@@ -1,27 +1,27 @@
 package fortipam
 
 import (
+	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"log"
 	"strconv"
-	"context"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func ResourceSecretCred() *schema.Resource {
 	sec_importer := ResourceSecretImport()
 
 	return &schema.Resource{
-		Read:   ResourceSecretRead,
-		Create: ResourceSecretCreate,
-		Update: ResourceSecretUpdate,
-		Delete: ResourceSecretDelete,
-		Schema: ResourceSecretSchema(),
+		Read:     ResourceSecretRead,
+		Create:   ResourceSecretCreate,
+		Update:   ResourceSecretUpdate,
+		Delete:   ResourceSecretDelete,
+		Schema:   ResourceSecretSchema(),
 		Importer: &sec_importer,
 	}
 }
 
-func ResourceSecretImport() schema.ResourceImporter{
+func ResourceSecretImport() schema.ResourceImporter {
 	return schema.ResourceImporter{
 		StateContext: ResourceSecretStateContext,
 	}
@@ -30,34 +30,34 @@ func ResourceSecretImport() schema.ResourceImporter{
 func ResourceSecretSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"path": {
-			Description:	"full folder path to the secret	e.g. public_folder/local",
-			Required:		true,
-			Type:			schema.TypeString,
-			DiffSuppressFunc:	ResourcePathdSuppressDiff,
+			Description:      "full folder path to the secret	e.g. public_folder/local",
+			Required:         true,
+			Type:             schema.TypeString,
+			DiffSuppressFunc: ResourcePathdSuppressDiff,
 		},
 		"name": {
-			Description:	"secret name under path",
-			Required:		true,
-			Type:			schema.TypeString,
-			ValidateFunc:	ResourceNameValid,
+			Description:  "secret name under path",
+			Required:     true,
+			Type:         schema.TypeString,
+			ValidateFunc: ResourceNameValid,
 		},
 		"template": {
-			Description:	"secret template name",
-			Required:		true,
-			Type:			schema.TypeString,
+			Description: "secret template name",
+			Required:    true,
+			Type:        schema.TypeString,
 		},
 		"fields": {
-			Description:	"Secret field info",
-			Required:		true,
-			Type:			schema.TypeList,
+			Description: "Secret field info",
+			Required:    true,
+			Type:        schema.TypeList,
 			Elem: &schema.Resource{
 				Schema: map[string]*schema.Schema{
 					"name": {
-						Type:	schema.TypeString,
+						Type:     schema.TypeString,
 						Required: true,
 					},
 					"value": {
-						Type:	schema.TypeString,
+						Type:     schema.TypeString,
 						Required: true,
 					},
 				},
@@ -87,11 +87,11 @@ func ResourceSecretReadHelper(schema *schema.ResourceData, meta interface{}, id 
 	}
 	json_sec_resp := sec_intf.(map[string]interface{})
 	sec_http_status := int(json_sec_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		schema.SetId("")
 		return fmt.Errorf("Secret ID retrieval failed. Access to secret [%d] denied", int(id))
 	}
-	
+
 	result := json_sec_resp["results"].([]interface{})[0].(map[string]interface{})
 	sec_name := result["name"].(string)
 	template_name := result["template"].(string)
@@ -100,7 +100,7 @@ func ResourceSecretReadHelper(schema *schema.ResourceData, meta interface{}, id 
 
 	schema.Set("name", sec_name)
 	schema.Set("template", template_name)
-	var	parsed_field []interface{}
+	var parsed_field []interface{}
 	for _, v := range sec_field {
 		field := v.(map[string]interface{})
 		fld_name := field["name"]
@@ -128,7 +128,7 @@ func ResourceSecretCreate(schema *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("Folder ID retrieval failed. Access to folder [%s] denied", path)
 	}
 	//pre-check
-	sec_id := getId(client, auth, path + "/" + secret, "secret")
+	sec_id := getId(client, auth, path+"/"+secret, "secret")
 	if sec_id > 0 {
 		schema.SetId("")
 		return fmt.Errorf("Secret:%s already exist under %s", secret, path)
@@ -141,7 +141,7 @@ func ResourceSecretCreate(schema *schema.ResourceData, meta interface{}) error {
 	}
 	json_sec_resp := sec_intf.(map[string]interface{})
 	sec_http_status := int(json_sec_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		schema.SetId("")
 		return fmt.Errorf("Secret Create failed:	%s", sec_intf)
 	}
@@ -169,7 +169,7 @@ func ResourceSecretDelete(schema *schema.ResourceData, meta interface{}) error {
 	log.Println("Secret:%d is deleted", id)
 	json_sec_resp := sec_intf.(map[string]interface{})
 	sec_http_status := int(json_sec_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		return fmt.Errorf("Secret delete failed:	%s", sec_intf)
 	}
 	schema.SetId("")
@@ -193,7 +193,7 @@ func ResourceSecretUpdate(schema *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("Folder ID retrieval failed. Access to folder [%s] denied", path)
 	}
 	//pre-check
-	sec_id := getId(client, auth, path + "/" + secret, "secret")
+	sec_id := getId(client, auth, path+"/"+secret, "secret")
 	if sec_id != 0 && sec_id != int32(id) {
 		schema.SetId("")
 		return fmt.Errorf("Secret:%s already exist under %s", secret, path)
@@ -206,7 +206,7 @@ func ResourceSecretUpdate(schema *schema.ResourceData, meta interface{}) error {
 	}
 	json_sec_resp := sec_intf.(map[string]interface{})
 	sec_http_status := int(json_sec_resp["http_status"].(float64))
-	if (sec_http_status != 200) {
+	if sec_http_status != 200 {
 		schema.SetId("")
 		return fmt.Errorf("Secret Create failed:	%s", sec_intf)
 	}
